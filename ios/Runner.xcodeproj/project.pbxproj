@@ -83,7 +83,6 @@
 				3C9F2C70703F7ECC26A8DB67 /* Pods-Runner.release.xcconfig */,
 				1FEA9F5AFAA9BFC8F1DB4F8B /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -410,7 +409,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeartistry.fluttershare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jessebelcourt.fluttershare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -539,7 +538,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeartistry.fluttershare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jessebelcourt.fluttershare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -562,7 +561,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codeartistry.fluttershare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jessebelcourt.fluttershare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
