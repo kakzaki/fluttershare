@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttershare/pages/activity_feed.dart';
+import 'package:fluttershare/pages/profile.dart';
+import 'package:fluttershare/pages/search.dart';
+import 'package:fluttershare/pages/timeline.dart';
+import 'package:fluttershare/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 class Home extends StatefulWidget {
   @override
@@ -11,6 +15,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool _isAuth = false;
   GoogleSignIn googleSignIn;
+  PageController pageController;
+  int pageIndex = 0;
 
   login() {
     print('logging in');
@@ -22,8 +28,11 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
+
+    pageController = PageController();
+
     googleSignIn = GoogleSignIn();
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
@@ -31,31 +40,75 @@ class _HomeState extends State<Home> {
       print('Error signing in: $err');
     });
     // Reauthenticate user when app is opened..
-    googleSignIn.signInSilently(suppressErrors: false)
-      .then((account) {
-        handleSignIn(account);
-      }).catchError((err) {
-        print('Error signing in: $err');
-      });
+    googleSignIn.signInSilently(suppressErrors: false).then((account) {
+      handleSignIn(account);
+    }).catchError((err) {
+      print('Error signing in: $err');
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
-        print('User signed in: $account');
-        setState(() {
-          _isAuth = true;
-        });
-      } else {
-        setState(() {
-          _isAuth = false;
-        });
-      }
+      print('User signed in: $account');
+      setState(() {
+        _isAuth = true;
+      });
+    } else {
+      setState(() {
+        _isAuth = false;
+      });
+    }
   }
-  
+
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTap(int pageIndex) {
+    print(pageIndex);
+    pageController.jumpToPage(
+      pageIndex,
+    );
+  }
+
   Widget _buildAuthScreen() {
-    return RaisedButton(
-      onPressed: logout,
-      child: Text('Logout'),
+    return Scaffold(
+      bottomNavigationBar: CupertinoTabBar(
+        currentIndex: pageIndex,
+        onTap: onTap,
+        activeColor: Theme.of(context).primaryColor,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.whatshot)),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_active)),
+          BottomNavigationBarItem(
+              icon: Icon(
+            Icons.photo_camera,
+            size: 35.0,
+          )),
+          BottomNavigationBarItem(icon: Icon(Icons.search)),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle)),
+        ],
+      ),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          Timeline(),
+          ActivityFeed(),
+          Upload(),
+          Search(),
+          Profile(),
+        ],
+      ),
     );
   }
 
@@ -63,15 +116,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).accentColor,
-              Theme.of(context).primaryColor,
-            ],
-          )
-        ),
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor,
+          ],
+        )),
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
